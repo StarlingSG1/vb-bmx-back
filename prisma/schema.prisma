@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+
+model User {
+  id        String @id @default(uuid())
+  firstName String
+  lastName  String
+  email     String @unique
+  password  String
+  Commande  Commande[]
+  role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id            String @id @default(uuid())
+  name          String 
+  description   String
+  price         Int
+  image         String
+  Archive       Boolean @default(false)
+  flocage       Boolean @default(false)
+  slug          String? @unique 
+  Article       Article[]
+  Size          Size[]
+  Color       Color[]
+}
+
+model Commande {
+  id            String @id @default(uuid())
+  userId        String
+  user          User @relation(fields: [userId], references: [id])
+  Article       Article[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Article {
+  id            String @id @default(uuid())
+  size          String
+  flocage       String?
+  commandeId    String
+  commande      Commande @relation(fields: [commandeId], references: [id])
+  productId     String
+  product       Product @relation(fields: [productId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Size {
+  id            Int @id @default(autoincrement())
+  name          String
+  Product       Product[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Color{
+  id      Int @id @default(autoincrement())
+  name    String
+  Product Product[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+
+enum Status {
+  ENCOURS
+  ARCHIVE
+  RECUPERATION
+}
+
+enum Role {
+  USER 
+  ADMIN
+  SUPERADMIN
+}
