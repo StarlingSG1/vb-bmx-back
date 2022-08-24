@@ -9,7 +9,6 @@
   "scripts": {
     "dev": "yarn nodemon",
     "start": "yarn nodemon",
-    "postinstall": "prisma generate",
     "build": "yarn prisma migrate deploy && yarn build:application",
     "build:application": "yarn babel src/ --out-dir src/ --extensions \".ts\"",
     "format": "yarn prettier --write \"src/**/*\""
