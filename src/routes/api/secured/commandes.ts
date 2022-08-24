@@ -17,6 +17,10 @@ api.get("/:id", async (req, res) => {
         where: {
             userId: req.params.id,
         },
+        include: {
+            user: true,
+            Article: true,
+        },
     });
     res.status(200).json(commandes);
 } 

@@ -86,7 +86,7 @@ api.post("/login", async (req, res) => {
 
     // Validate user input
     if (!(email && password)) {
-      return res.status(400).send("All input is required");
+      return res.status(400).send("All input are required");
     }
     // Validate if user exist in our database
     const user = await prisma.user.findUnique({
@@ -95,7 +95,9 @@ api.post("/login", async (req, res) => {
       },
     });
 
-    console.log(user)
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
 
     if (user && (await bcrypt.compare(password, user.password))) {
       // Create token
@@ -117,15 +119,19 @@ api.post("/login", async (req, res) => {
   }
 });
 
-api.get("/me", async (req, res) => {
+api.post("/me", async ({body}, res) => {
   try {
-    // use verifytoken
-    verifyToken(req, res);
-    
-    
-    return res.status(200).json("ok");
+    const decoded = jwt.verify(body.token, process.env.TOKEN_SECRET);
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: decoded.id,
+      },
+    });
+    delete user.password;
+    res.status(200).send({user: user});
   } catch (err) {
-    console.log(err);
+    res.status(400).send("FetchMe error");
   }
 });
 

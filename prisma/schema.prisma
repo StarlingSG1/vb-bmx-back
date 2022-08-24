@@ -18,6 +18,7 @@ model User {
   lastName  String
   email     String @unique
   password  String
+  phone     String?
   Commande  Commande[]
   role      Role
   createdAt DateTime @default(now())
@@ -40,9 +41,11 @@ model Product {
 
 model Commande {
   id            String @id @default(uuid())
+  number        String @unique
   userId        String
   user          User @relation(fields: [userId], references: [id])
   Article       Article[]
+  status        Status
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
