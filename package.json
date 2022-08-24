@@ -7,8 +7,8 @@
   },
   "main": "./src/main.ts",
   "scripts": {
-    "dev": "yarn nodemon",
-    "start": "yarn nodemon",
+    "dev": "nodemon nodemon.json",
+    "start": "nodemon nodemon.json",
     "build": "yarn prisma migrate deploy && yarn build:application",
     "build:application": "yarn babel src/ --out-dir src/ --extensions \".ts\"",
     "format": "yarn prettier --write \"src/**/*\""
