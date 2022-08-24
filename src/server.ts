@@ -3,6 +3,7 @@ import http from 'http'
 import express from 'express'
 import cors from 'cors'
 import passport from 'passport'
+const PORT = process.env.PORT || 8080
 
 // Rest API
 import routes from './routes'
@@ -31,7 +32,7 @@ export function launch(port: number): void {
   /* Routes */
   application.use('/', routes)
 
-  application.listen(port, () => {
+  application.listen(PORT, () => {
     console.log(`Server started at: http://localhost:${port}`);
   });
 }
