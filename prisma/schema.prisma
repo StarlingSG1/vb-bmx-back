@@ -33,7 +33,7 @@ model Product {
   image         String
   Archive       Boolean @default(false)
   flocage       Boolean @default(false)
-  slug          String? @unique 
+  slug          String @unique 
   Article       Article[]
   Size          Size[]
   Color       Color[]
@@ -54,10 +54,11 @@ model Article {
   id            String @id @default(uuid())
   size          String
   flocage       String?
+  quantity      Int   @default(1)
   commandeId    String
   commande      Commande @relation(fields: [commandeId], references: [id])
   productId     String
-  product       Product @relation(fields: [productId], references: [id])
+  Product       Product @relation(fields: [productId], references: [id])
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }

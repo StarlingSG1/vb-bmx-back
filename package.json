@@ -7,7 +7,6 @@
   },
   "main": "./src/main.ts",
   "scripts": {
-    "prepare": "npx prisma generate",
     "dev": "yarn nodemon",
     "start": "yarn nodemon",
     "build": "yarn prisma migrate deploy && yarn build:application",

@@ -6,7 +6,12 @@ const api = Router();
 
 // get all commandes
 api.get("/", async (req, res) => {
-    const allCommandes = await prisma.commande.findMany();
+    const allCommandes = await prisma.commande.findMany({
+        include: {
+            user: true,
+            Article: true,
+        },
+    });
     res.status(200).json(allCommandes);
 }
 );
@@ -19,12 +24,19 @@ api.get("/:id", async (req, res) => {
         },
         include: {
             user: true,
-            Article: true,
+            Article: {
+                include: {
+                    Product: true,
+                },
+            },
         },
     });
+
     res.status(200).json(commandes);
 } 
 );
+
+
 
 // patch a commande
 api.patch("/:id", async (req, res) => {
