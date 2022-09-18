@@ -1,4 +1,4 @@
-import auth from "../../../middlewares/auth";
+import verifyToken from "../../../middlewares/auth";
 import { Router } from "express";
 import prisma from "../../../helpers/prisma";
 
@@ -9,7 +9,11 @@ api.get("/", async (req, res) => {
     const allCommandes = await prisma.commande.findMany({
         include: {
             user: true,
-            Article: true,
+            Article: {
+                include: {
+                    Product: true,
+                },
+            },
         },
     });
     res.status(200).json(allCommandes);
@@ -42,6 +46,7 @@ api.get("/:id", async (req, res) => {
 api.patch("/:id", async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
+
     const commande = await prisma.commande.update({
         where: {
             id,
@@ -50,7 +55,10 @@ api.patch("/:id", async (req, res) => {
             status,
         },
     });
-    res.status(200).json(commande);
+
+// Pouvoir envoyer un mail si la commande est RECUPERABLE 
+
+    res.status(200).json(commande.status);
 }
 );
 
