@@ -134,7 +134,7 @@ api.post("/me", async ({body}, res) => {
     delete user.password;
     res.status(200).send({user: user});
   } catch (err) {
-    res.status(400).send("FetchMe error");
+    res.status(400).send({error: "AUTHFAILED"});
   }
 });
 
