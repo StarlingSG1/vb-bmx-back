@@ -9,7 +9,11 @@ api.get("/", async (req, res) => {
     const allCommandes = await prisma.commande.findMany({
         include: {
             user: true,
-            Article: true,
+            Article: {
+                include: {
+                    Product: true,
+                },
+            },
         },
     });
     res.status(200).json(allCommandes);

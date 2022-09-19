@@ -21,6 +21,7 @@ api.post("/register", async ({ body }, res) => {
       email,
       password,
       confirmPassword,
+      phone,
       conditions
     } = body;
 
@@ -38,7 +39,7 @@ api.post("/register", async ({ body }, res) => {
     });
 
     if (oldUser) {
-      return res.status(409).send("User Already Exist. Please Login");
+      return res.status(200).json({error: true, message: "Un utilisateur avec cet email existe déjà"});
     }
 
     if (password !== confirmPassword) {
@@ -59,6 +60,8 @@ api.post("/register", async ({ body }, res) => {
         lastName: ucwords(lastName.trim().toLowerCase()),
         email: email.trim().toLowerCase(),
         password: encryptedPassword,
+        phone: phone,
+        role: "USER"
       },
     });
 
@@ -86,7 +89,7 @@ api.post("/login", async (req, res) => {
 
     // Validate user input
     if (!(email && password)) {
-      return res.status(400).send("All input are required");
+      return res.status(200).json({error: true, message: "Tout les champs doivent être rempli"});
     }
     // Validate if user exist in our database
     const user = await prisma.user.findUnique({
@@ -96,7 +99,7 @@ api.post("/login", async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).send("User not found");
+      return res.status(200).json({error: true, message: "Adresse email ou mot de passe incorrect"});
     }
 
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -112,7 +115,7 @@ api.post("/login", async (req, res) => {
       // user
       return res.status(200).json(user);
     } else {
-      return res.status(400).send("Invalid Credentials");
+      return res.status(200).json({error: true, message: "Adresse email ou mot de passe incorrect"});
     }
   } catch (err) {
     console.log(err);
