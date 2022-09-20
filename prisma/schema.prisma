@@ -27,6 +27,7 @@ model User {
 
 model Product {
   id            String @id @default(uuid())
+  stripe_id     String @unique
   name          String 
   description   String
   price         Int
