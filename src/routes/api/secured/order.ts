@@ -28,8 +28,8 @@ api.post('/create-checkout-session', async (req, res) => {
     mode: 'payment',
     payment_method_types: ['card'],
     allow_promotion_codes: true,
-    success_url: `${process.env.LOCAL_FRONT_URL}?success=true`,
-    cancel_url: `${process.env.LOCAL_FRONT_URL}?canceled=true`,
+    success_url: `${process.env.LOCAL_FRONT_URL}payement/success`,
+    cancel_url: `${process.env.LOCAL_FRONT_URL}payement/canceled`,
   });
   
   return res.status(200).json({error: false, content: session});
