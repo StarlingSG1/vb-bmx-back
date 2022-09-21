@@ -28,6 +28,7 @@ export function launch(port: number): void {
     console.log('Err:', error)
     next()
   })
+  
 
   /* Routes */
   application.use('/', routes)
