@@ -54,7 +54,7 @@ model Commande {
 
 model Article {
   id            String @id @default(uuid())
-  size          String
+  size          String?
   flocage       String?
   quantity      Int   @default(1)
   commandeId    String
