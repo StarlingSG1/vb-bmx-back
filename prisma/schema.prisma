@@ -42,6 +42,7 @@ model Product {
 
 model Commande {
   id            String @id @default(uuid())
+  stripe_id     String @unique
   number        String @unique
   userId        String
   user          User @relation(fields: [userId], references: [id])

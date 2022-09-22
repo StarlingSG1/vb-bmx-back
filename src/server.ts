@@ -18,6 +18,7 @@ export function launch(port: number): void {
 
   /* Middlewares */
   application.use(injectResponseHelpers())
+  application.use(express.raw({type: "*/*"}))
   application.use(express.json())
   application.use(express.static('uploads'))
   application.use(express.urlencoded({ extended: true }))

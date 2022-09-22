@@ -23,7 +23,7 @@ api.post("/register", async ({ body }, res) => {
       confirmPassword,
       phone,
       conditions
-    } = body;
+    } = JSON.parse(body);
 
     // Validate user input
     if (!(email && password && confirmPassword && firstName && lastName && conditions)) {
@@ -85,7 +85,7 @@ api.post("/login", async (req, res) => {
   // Our login logic starts here
   try {
     // Get user input
-    const { email, password } = req.body;
+    const { email, password } = JSON.parse(req.body);
 
     // Validate user input
     if (!(email && password)) {
@@ -123,8 +123,10 @@ api.post("/login", async (req, res) => {
 });
 
 api.post("/me", async ({body}, res) => {
+  const myBody = JSON.parse(body)
+
   try {
-    const decoded = jwt.verify(body.token, process.env.TOKEN_SECRET);
+    const decoded = jwt.verify(myBody.token, process.env.TOKEN_SECRET);
 
     const user = await prisma.user.findUnique({
       where: {
