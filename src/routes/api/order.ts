@@ -20,14 +20,19 @@ const api = Router();
 api.post('/create-checkout-session',  async (req, res) => {
   let orderTable = [];
   const myBody = JSON.parse(req.body)
+  const myBody2 = JSON.stringify(myBody)
   myBody.forEach(item => {
     orderTable.push({price: item.stripe, quantity: item.quantity})
   });
   const session = await stripe.checkout.sessions.create({
     line_items: orderTable,
-    metadata: {"test": "test"},
     mode: 'payment',  
     payment_method_types: ['card'],
+    metadata: {
+     myBody2
+    },
+    client_reference_id: "da285cd7-4d6c-444d-b39e-c220c8ff4bda",
+
     allow_promotion_codes: true,
     success_url: `http://localhost:3000/payement/success`,
     cancel_url: `http://localhost:3000/payement/canceled`,
@@ -37,13 +42,23 @@ api.post('/create-checkout-session',  async (req, res) => {
 });
 
 
-const endpointSecret = "whsec_kfRBxSFqlMXaiy0VL4wuOUURbOKT2gam";
+const endpointSecret = "whsec_XSb8D6vsHsC7VJ7NKBILxmc0eOWwVob1";
 
-const fulfillOrder = async (session) => {
+const fulfillOrder = async (session,response) => {
   // TODO: fill me in
+  const session4 = await stripe.events.retrieve(session.id)
+  console.log(session4)
+  const command = await prisma.commande.create({
+    data: {
+      stripe_id: session.id,
+      number: "VBMX00000001",
+      userId: session4.data.object.client_reference_id,
+      status: "ENCOURS",
+    }
+  })
+  console.log(command)
 
-  const session4 = await stripe.events.retrieve("evt_1Lkl5lGaJHiI9Jq6BPnRtu7R")
-  console.log("eevnt", session4)
+
 
 
 
@@ -65,9 +80,9 @@ const fulfillOrder = async (session) => {
 
   // Handle the event
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
+    const session = event;
     // Fulfill the purchase...
-    fulfillOrder(session);
+    fulfillOrder(session, response);
   }
 
   // Return a 200 response to acknowledge receipt of the event
