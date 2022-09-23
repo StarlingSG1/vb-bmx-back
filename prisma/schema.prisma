@@ -56,6 +56,7 @@ model Article {
   id            String @id @default(uuid())
   size          String?
   flocage       String?
+  color         String?
   quantity      Int   @default(1)
   commandeId    String
   commande      Commande @relation(fields: [commandeId], references: [id])

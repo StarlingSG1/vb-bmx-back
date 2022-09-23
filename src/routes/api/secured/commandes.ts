@@ -8,7 +8,14 @@ const api = Router();
 api.get("/", async (req, res) => {
     const allCommandes = await prisma.commande.findMany({
         include: {
-            user: true,
+            user: {
+                select: {
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                    phone: true,
+                },
+            },  
             Article: {
                 include: {
                     Product: true,
@@ -27,7 +34,14 @@ api.get("/:id", async (req, res) => {
             userId: req.params.id,
         },
         include: {
-            user: true,
+            user: {
+                select: {
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                    phone: true,
+                },
+            },  
             Article: {
                 include: {
                     Product: true,
@@ -39,8 +53,6 @@ api.get("/:id", async (req, res) => {
     res.status(200).json(commandes);
 } 
 );
-
-
 
 // patch a commande
 api.patch("/:id", async (req, res) => {

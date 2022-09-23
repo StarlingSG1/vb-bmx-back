@@ -9,7 +9,7 @@ api.get("/", async (req, res) => {
   res.status(200).json(allProducts);
 });
 
-api.get("/:id", async (req, res) => {
+api.get("/:id", async (req, res) => { 
   const product = await prisma.product.findUnique({
     where: {
       id: req.params.id,
@@ -24,9 +24,10 @@ api.get("/:id", async (req, res) => {
 
 
 api.post("/slug", async (req, res) => {
+const body = JSON.parse(req.body)
   const product = await prisma.product.findUnique({
     where: {
-      slug: req.body.slug,
+      slug: body.slug,
     },
     include: {
       Size: true,
@@ -38,11 +39,11 @@ api.post("/slug", async (req, res) => {
 
 
 api.post("/", async (req, res) => {
-  const { name, price, description, image } = req.body;
+  const { name, price, description, image } = JSON.parse(req.body);
   const product = await prisma.product.create({
     data: {
       name,
-      price,
+      price,  
       description,
       image,
     },
