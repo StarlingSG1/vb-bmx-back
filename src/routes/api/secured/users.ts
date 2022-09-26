@@ -18,7 +18,7 @@ api.post("/update", async ({ body }, res) => {
       email,
       phone,
       token
-    } = body;
+    } = JSON.parse(body);
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
 
     // Validate user input
@@ -70,7 +70,6 @@ api.post("/update", async ({ body }, res) => {
 
 api.post("/update-password", async ({ body }, res) => {
   try {
-    console.log(body)
     const { oldPassword, newPassword, confirmPassword, token } = body;
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
 
