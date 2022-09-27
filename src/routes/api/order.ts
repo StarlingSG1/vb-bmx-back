@@ -15,7 +15,7 @@ const express = require('express');
 import bodyParser, { json } from "body-parser";
 
 const api = Router();
-const endpointSecret = "whsec_kfRBxSFqlMXaiy0VL4wuOUURbOKT2gam";
+const endpointSecret = "whsec_koJBPZSxXPi0OfxOSAYF5W6NoKDVr3RU";
 
 const fulfillOrder = async (session) => {
   const theSession = await stripe.events.retrieve(session.id)
