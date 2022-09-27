@@ -84,6 +84,8 @@ api.post("/register", async ({ body }, res) => {
 api.post("/login", async (req, res) => {
   // Our login logic starts here
   try {
+    const VERIFY_URL = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.SECRET_KEY}&response=${req.body['recaptcha']}`;
+    const tokenValue = fetch(VERIFY_URL, { method: 'POST' })
     // Get user input
     const { email, password } = JSON.parse(req.body);
 
