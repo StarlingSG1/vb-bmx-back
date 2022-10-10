@@ -15,7 +15,7 @@ const express = require('express');
 import bodyParser, { json } from "body-parser";
 
 const api = Router();
-const endpointSecret = "whsec_kfRBxSFqlMXaiy0VL4wuOUURbOKT2gam";
+const endpointSecret = "whsec_koJBPZSxXPi0OfxOSAYF5W6NoKDVr3RU";
 
 const fulfillOrder = async (session) => {
   const theSession = await stripe.events.retrieve(session.id)
@@ -121,8 +121,8 @@ api.post('/create-checkout-session/:id', async (req, res) => {
     },
     client_reference_id: userId,
     allow_promotion_codes: true,
-    success_url: `http://localhost:3000/payement/success`,
-    cancel_url: `http://localhost:3000/payement/canceled`,
+    success_url: `https://boutique.vb-bmx-club.fr/payement/success`,
+    cancel_url: `https://boutique.vb-bmx-club.fr/payement/canceled`,
   });
 
   return res.status(200).json({ error: false, content: session });

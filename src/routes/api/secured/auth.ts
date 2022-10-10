@@ -84,9 +84,11 @@ api.post("/register", async ({ body }, res) => {
 api.post("/login", async (req, res) => {
   // Our login logic starts here
   try {
+    const VERIFY_URL = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.SECRET_KEY}&response=${req.body['recaptcha']}`;
+    const tokenValue = fetch(VERIFY_URL, { method: 'POST' })
     // Get user input
     const { email, password } = JSON.parse(req.body);
-
+    
     // Validate user input
     if (!(email && password)) {
       return res.status(200).json({error: true, message: "Tout les champs doivent être rempli"});
@@ -97,21 +99,21 @@ api.post("/login", async (req, res) => {
         email: email,
       },
     });
-
+    
     if (!user) {
       return res.status(200).json({error: true, message: "Adresse email ou mot de passe incorrect"});
     }
-
+    
     if (user && (await bcrypt.compare(password, user.password))) {
       // Create token
       const token = jwt.sign({ id: user.id, email }, process.env.TOKEN_SECRET, {
         expiresIn: "2h",
       });
-
+      
       // save user token
       user.token = token;
       delete user.password;
-
+      
       // user
       return res.status(200).json(user);
     } else {

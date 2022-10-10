@@ -55,8 +55,10 @@ api.get("/:id", async (req, res) => {
 
 // patch a commande
 api.patch("/:id", async (req, res) => {
+    
     const { id } = req.params;
-    const { status } = req.body;
+    const body = JSON.parse(req.body);
+    const { status } = body;
 
     const commande = await prisma.commande.update({
         where: {
