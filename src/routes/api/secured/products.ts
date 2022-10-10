@@ -1,12 +1,26 @@
 import auth from "../../../middlewares/auth";
 import { Router } from "express";
 import prisma from "../../../helpers/prisma";
+import mailer from "../../../helpers/mailjet";
 
 const api = Router();
 
 api.get("/", async (req, res) => {
-  const allProducts = await prisma.product.findMany();
-  res.status(200).json(allProducts);
+
+ const mail = mailer();
+ mail
+ .then((result) => {
+   console.log(result.body)
+ })
+ .catch((err) => {
+   console.log(err.statusCode)
+ })
+
+
+  // const allProducts = await prisma.product.findMany();
+  // res.status(200).json(allProducts);
+  const mailjet = require ('node-mailjet')
+
 });
 
 api.get("/:id", async (req, res) => { 
