@@ -4,6 +4,7 @@ import express from 'express'
 import cors from 'cors'
 import passport from 'passport'
 const PORT = process.env.PORT || 8080
+import { PrismaClient } from '@prisma/client'
 
 // Rest API
 import routes from './routes'

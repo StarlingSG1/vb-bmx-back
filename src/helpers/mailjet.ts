@@ -1,29 +1,32 @@
 import dotenv from "dotenv";
 dotenv.config();
+
 const mailjet = require("node-mailjet").connect(
   process.env.MAILJET_1,
   process.env.MAILJET_2
 );
 
-export default function mailer(email, name) {
+export default function mailer(email,firstname,lastname,order_date,order_id) {
   const request = mailjet.post("send", { version: "v3.1" }).request({
     Messages: [
       {
         From: {
-          Email: "barriere.jeremie@gmail.com",
-          Name: "Biscotte Family",
+          Email: "contact@vb-bmx-club.fr",
+          Name: "VB BMX CLUB",
         },
         To: [
           {
             Email: email,
-            Name: name,
+            Name: firstname + " " + lastname,
           },
         ],
-        TemplateID: 4007808,
+        TemplateID: 4269222,
         TemplateLanguage: true,
-        Subject: "Création de votre compte BISCOTTE FAMILY",
+        Subject: "Confirmation de votre commande",
         Variables: {
-          name: name,
+          firstname: firstname,
+          order_date: order_date,
+          order_id: order_id,
         },
       },
     ],

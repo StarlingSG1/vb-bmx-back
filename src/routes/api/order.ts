@@ -81,6 +81,27 @@ const fulfillOrder = async (session) => {
     })
 
   })
+
+const date = new Date();
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const dateCommande = day + "/" + month + "/" + year;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: theSession.data.object.client_reference_id,
+    },
+  });
+
+  const mail = mailer(user?.email, user?.firstName, user?.lastName, dateCommande, numeroCommande);
+  mail
+    .then((result) => {
+      console.log(result.body);
+    })
+    .catch((err) => {
+      console.log(err.statusCode);
+    });
 }
 
 
