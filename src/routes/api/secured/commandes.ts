@@ -22,6 +22,9 @@ api.get("/", async (req, res) => {
                 },
             },
         },
+        orderBy: {
+            createdAt: "desc",
+        },
     });
     res.status(200).json(allCommandes);
 }
@@ -47,6 +50,9 @@ api.get("/:id", async (req, res) => {
                     Product: true,
                 },
             },
+        },
+        orderBy: {
+            createdAt: "desc",
         },
     });
     res.status(200).json(commandes);

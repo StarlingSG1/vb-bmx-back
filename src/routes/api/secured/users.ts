@@ -70,7 +70,7 @@ api.post("/update", async ({ body }, res) => {
 
 api.post("/update-password", async ({ body }, res) => {
   try {
-    const { oldPassword, newPassword, confirmPassword, token } = body;
+    const { oldPassword, newPassword, confirmPassword, token } = JSON.parse(body);
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
 
     // Validate user input
