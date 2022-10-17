@@ -6,7 +6,7 @@ dotenv.config();
 import prisma from "../../helpers/prisma";
 import ucwords from "../../helpers/cleaner";
 import jwt from "jsonwebtoken";
-import mailer from "../../helpers/mailjet";
+import {mailer} from "../../helpers/mailjet";
 import verifyToken from "../../middlewares/auth";
 import auth from "../../middlewares/auth";
 const Stripe = require('stripe');
