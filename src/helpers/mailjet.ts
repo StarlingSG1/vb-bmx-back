@@ -80,7 +80,7 @@ export  function mailerCommandStatus(email,firstname,lastname,order_number) {
         Subject: "Votre commande est disponible à la récupération",
         Variables: {
           firstname: firstname,
-          order_number
+          order_number: order_number,
         },
       },
     ],

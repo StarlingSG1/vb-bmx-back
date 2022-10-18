@@ -83,8 +83,8 @@ api.patch("/:id", async (req, res) => {
     });
 
 
-    if(commande)    {
-        mailerCommandStatus(commande.userId, user.firstName, user.lastName, commande.number);
+    if(commande.status === "RECUPERATION") {
+        mailerCommandStatus(user.email, user.firstName, user.lastName, commande.number);
     }
 
     res.status(200).json(commande.status);
