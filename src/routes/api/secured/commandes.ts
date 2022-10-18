@@ -1,6 +1,7 @@
 import verifyToken from "../../../middlewares/auth";
 import { Router } from "express";
 import prisma from "../../../helpers/prisma";
+import { mailerCommandStatus } from "../../../helpers/mailjet";
 
 const api = Router();
 
@@ -75,7 +76,16 @@ api.patch("/:id", async (req, res) => {
         },
     });
 
-// Pouvoir envoyer un mail si la commande est RECUPERABLE 
+    const user = await prisma.user.findUnique({
+        where: {
+            id: commande.userId,
+        },
+    });
+
+
+    if(commande)    {
+        mailerCommandStatus(commande.userId, user.firstName, user.lastName, commande.number);
+    }
 
     res.status(200).json(commande.status);
 }

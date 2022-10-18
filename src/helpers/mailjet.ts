@@ -60,3 +60,30 @@ export  function mailerReset(email,firstname,lastname,urlReset) {
   });
   return request;
 }
+
+export  function mailerCommandStatus(email,firstname,lastname,order_number) {
+  const request = mailjet.post("send", { version: "v3.1" }).request({
+    Messages: [
+      {
+        From: {
+          Email: "contact@vb-bmx-club.fr",
+          Name: "VB BMX CLUB",
+        },
+        To: [
+          {
+            Email: email,
+            Name: firstname + " " + lastname,
+          },
+        ],
+        TemplateID: 4288162,
+        TemplateLanguage: true,
+        Subject: "Votre commande est disponible à la récupération",
+        Variables: {
+          firstname: firstname,
+          order_number
+        },
+      },
+    ],
+  });
+  return request;
+}

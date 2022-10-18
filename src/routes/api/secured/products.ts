@@ -5,11 +5,15 @@ import prisma from "../../../helpers/prisma";
 const api = Router();
 
 api.get("/", async (req, res) => {
-  const allProducts = await prisma.product.findMany();
+  const allProducts = await prisma.product.findMany({
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
   res.status(200).json(allProducts);
 });
 
-api.get("/:id", async (req, res) => { 
+api.get("/:id", async (req, res) => {
   const product = await prisma.product.findUnique({
     where: {
       id: req.params.id,
@@ -24,7 +28,7 @@ api.get("/:id", async (req, res) => {
 
 
 api.post("/slug", async (req, res) => {
-const body = JSON.parse(req.body)
+  const body = JSON.parse(req.body)
   const product = await prisma.product.findUnique({
     where: {
       slug: body.slug,
@@ -39,13 +43,29 @@ const body = JSON.parse(req.body)
 
 
 api.post("/", async (req, res) => {
-  const { name, price, description, image } = JSON.parse(req.body);
+  const { name, price, description, image, stripe_id, Archive, flocage } = JSON.parse(req.body);
+  const size = [
+    {
+      name: "S",
+    },
+    {
+      name: "L",
+    },
+  ];
+  const slug = "faire le slug";
   const product = await prisma.product.create({
     data: {
       name,
-      price,  
+      price,
       description,
       image,
+      stripe_id,
+      Archive,
+      flocage,
+      slug,
+      Size: {
+        create: size,
+      },
     },
   });
   res.status(201).json(product);
