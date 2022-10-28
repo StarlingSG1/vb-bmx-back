@@ -6,9 +6,17 @@ const api = Router();
 
 api.get("/", async (req, res) => {
   const allProducts = await prisma.product.findMany({
+    include : {
+      Image: {
+        orderBy: {
+          order: "asc",
+        },
+      }
+    },
     orderBy: {
       createdAt: "asc",
     },
+
   });
   res.status(200).json(allProducts);
 });
@@ -21,6 +29,11 @@ api.get("/:id", async (req, res) => {
     include: {
       Size: true,
       Color: true,
+      Image: {
+        orderBy: {
+          order: "asc",
+        },
+      }
     },
   });
   res.status(200).json(product);
@@ -36,6 +49,11 @@ api.post("/slug", async (req, res) => {
     include: {
       Size: true,
       Color: true,
+      Image: {
+        orderBy: {
+          order: "asc",
+        },
+      }
     },
   });
   res.status(200).json(product);
@@ -58,7 +76,6 @@ api.post("/", async (req, res) => {
       name,
       price,
       description,
-      image,
       stripe_id,
       Archive,
       flocage,
@@ -92,7 +109,6 @@ api.patch("/:id", async (req, res) => {
       name,
       price,
       description,
-      image,
     },
   });
   res.status(200).json(product);

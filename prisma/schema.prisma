@@ -31,10 +31,10 @@ model Product {
   name          String 
   description   String
   price         Int
-  image         String
   Archive       Boolean @default(false)
   flocage       Boolean @default(false)
   slug          String @unique 
+  Image        Image[]
   Article       Article[]
   Size          Size[]
   Color       Color[]
@@ -84,6 +84,14 @@ model Color{
   updatedAt     DateTime @updatedAt
 }
 
+model Image{
+  id            Int @id @default(autoincrement())
+  name          String @unique
+  url           String @unique
+  productId     String
+  Product       Product @relation(fields: [productId], references: [id])
+  order         Int @default(0)
+}
 
 
 enum Status {

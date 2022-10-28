@@ -16,10 +16,18 @@ api.get("/", async (req, res) => {
                     email: true,
                     phone: true,
                 },
-            },  
+            },
             Article: {
                 include: {
-                    Product: true,
+                    Product: {
+                        include: {
+                            Image: {
+                                orderBy: {
+                                    order: "asc",
+                                },
+                            },
+                        },
+                    },
                 },
             },
         },
@@ -45,10 +53,18 @@ api.get("/:id", async (req, res) => {
                     email: true,
                     phone: true,
                 },
-            },  
+            },
             Article: {
                 include: {
-                    Product: true,
+                    Product: {
+                        include: {
+                            Image: {
+                                orderBy: {
+                                    order: "asc",
+                                },
+                            },
+                        }
+                    },
                 },
             },
         },
@@ -57,12 +73,12 @@ api.get("/:id", async (req, res) => {
         },
     });
     res.status(200).json(commandes);
-} 
+}
 );
 
 // patch a commande
 api.patch("/:id", async (req, res) => {
-    
+
     const { id } = req.params;
     const body = JSON.parse(req.body);
     const { status } = body;
@@ -83,7 +99,7 @@ api.patch("/:id", async (req, res) => {
     });
 
 
-    if(commande.status === "RECUPERATION") {
+    if (commande.status === "RECUPERATION") {
         mailerCommandStatus(user.email, user.firstName, user.lastName, commande.number);
     }
 
