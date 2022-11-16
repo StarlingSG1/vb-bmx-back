@@ -23,14 +23,13 @@ export function launch(port: number): void {
   application.use(express.json())
   application.use(express.static('uploads'))
   application.use(express.urlencoded({ extended: true }))
-  application.use(cors({ origin: 'https://boutique.vb-bmx-club.fr' }))
+  application.use(cors({ origin: '*' }))
   application.use(passport.initialize())
 
   application.use(function (error, req, res, next) {
     console.log('Err:', error)
     next()
   })
-  
 
   /* Routes */
   application.use('/', routes)
