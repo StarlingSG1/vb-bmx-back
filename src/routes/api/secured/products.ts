@@ -22,6 +22,7 @@ api.get("/", async (req, res) => {
 });
 
 api.get("/:id", async (req, res) => {
+  
   const product = await prisma.product.findUnique({
     where: {
       id: req.params.id,
